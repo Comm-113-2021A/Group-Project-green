@@ -1,0 +1,24 @@
+---
+title: "README Data"
+output: html_document
+---
+
+```{r load-packages, message = FALSE}
+library(tidyverse) 
+library(skimr)
+library(codebook)
+```
+
+```{r load-data, eval=TRUE}
+heart <- read_csv("heart_failure_clinical_records_dataset.csv")
+```
+
+## Stroke Dataset Codebook
+```{r, eval=TRUE}
+codebook(heart)
+```
+
+## Skim Stroke Dataset Summary
+```{r, eval=TRUE}
+skim(heart)
+```
