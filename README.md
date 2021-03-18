@@ -1,5 +1,14 @@
 # Group Project
 
+yl: I like this idea, in general, but I think we can make it more interesting with the tools from the next few weeks. Rather than simply looking at the correlations in this dataset, how about a project where you create a machine learning model to predict who is most likely to have heart problems? I.e., can you work on a personalized medicine project? Take some background info and figure out the risk that they get heart disease?
+
+The heart failure dataset is a bit small, but I think there are lots of other options here including  aheart disease dataset: 
+https://archive.ics.uci.edu/ml/datasets.php?format=&task=&att=&area=life&numAtt=&numIns=&type=&sort=nameUp&view=table
+
+One issue with this proposal is that you didn't really do any preliminary data analysis related to your questions. I like that you used the codebook package, but you didn't really do anything beyond that. 
+
+9/10.
+
 ### Section 1: Introduction  
 Our group chose to use the "Heart Failure Predition" dataset (https://www.kaggle.com/andrewmvd/heart-failure-clinical-data) from
 a study published in *BMC Medical Informatics and Decision Making* by Davide Chicco & Giuseppe Jurman to answer our research question, which is "Between the
