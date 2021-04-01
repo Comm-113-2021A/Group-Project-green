@@ -1,6 +1,6 @@
-Project title
+Heatt Failure Predictions
 ================
-by Team name
+Group Green
 
 ## Summary
 

@@ -1,6 +1,6 @@
 ---
-title: Project title
-author: by Team name
+title: Heatt Failure Predictions
+author: Group Green
 output: github_document
 ---
 
