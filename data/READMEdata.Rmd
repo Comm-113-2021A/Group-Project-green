@@ -10,15 +10,19 @@ library(codebook)
 ```
 
 ```{r load-data, eval=TRUE}
-heart <- read_csv("heart_failure_clinical_records_dataset.csv")
+heartdata <- read.csv("https://raw.githubusercontent.com/Maz-SM-22/Neural-Network-Classifier/master/heart_statlog_cleveland_hungary_final.csv")
+```
+
+```{r}
+save(heartdata,file="./heartdata.RData")
 ```
 
 ## Stroke Dataset Codebook
 ```{r, eval=TRUE}
-codebook(heart)
+codebook(heartdata)
 ```
 
 ## Skim Stroke Dataset Summary
 ```{r, eval=TRUE}
-skim(heart)
+skim(heartdata)
 ```
