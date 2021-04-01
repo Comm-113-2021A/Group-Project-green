@@ -1,4 +1,4 @@
-Heatt Failure Predictions
+Heart Failure Predictions
 ================
 Group Green
 
