@@ -69,6 +69,6 @@ tidy(stroke_model3)
 
 ```{r}
 stroke %>%
-  ggplot(aes(x=smoking_status, y=stroke)) + geom_point() + 
+  ggplot(aes(x=smoking_status, y=stroke)) + 
   geom_violin()
 ```
