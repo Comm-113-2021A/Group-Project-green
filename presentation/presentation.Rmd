@@ -31,6 +31,7 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r load-data, include=FALSE}
 # Load your data here
+stroke <- read_csv("../data/healthcare_dataset_stroke_data.csv")
 ```
 
 ```{r}
