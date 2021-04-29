@@ -28,9 +28,29 @@ class: center, middle, inverse, title-slide
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class: center, middle
 
-## Which variables are most useful for determining whether an individual is likely to have a stroke? &lt;br&gt; &lt;br&gt; How can we train a model on these variables to predict stroke likelihood given these variables?
+## Which variables are most useful for determining whether an individual is likely to have a stroke? &lt;br&gt; &lt;br&gt; How can we train a model on these variables to predict stroke likelihood?
 
 ---
 # The dataset
@@ -63,8 +83,45 @@ We used a logistical regression model to narrow down predictor variables by thei
 - heart disease
 - age
 - average glucose level
+---
+# Choosing potential predictor variables
 
-TODO: INSERT GLM AND SUMMARY CODE CHUNK
+
+```r
+stroke_model_prelim &lt;- glm(stroke ~ gender + age + avg_glucose_level + hypertension + heart_disease, data = train_data, family = binomial)
+summary(stroke_model_prelim)
+```
+
+```
+## 
+## Call:
+## glm(formula = stroke ~ gender + age + avg_glucose_level + hypertension + 
+##     heart_disease, family = binomial, data = train_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.2159  -0.3075  -0.1601  -0.0759   3.2214  
+## 
+## Coefficients:
+##                     Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -7.803983   0.440518 -17.715  &lt; 2e-16 ***
+## genderMale          0.096937   0.164841   0.588  0.55649    
+## genderOther        -8.332742 535.411238  -0.016  0.98758    
+## age                 0.069014   0.006200  11.132  &lt; 2e-16 ***
+## avg_glucose_level   0.005416   0.001356   3.995 6.46e-05 ***
+## hypertension        0.453510   0.191232   2.372  0.01772 *  
+## heart_disease       0.573123   0.209305   2.738  0.00618 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1446.4  on 3832  degrees of freedom
+## Residual deviance: 1131.8  on 3826  degrees of freedom
+## AIC: 1145.8
+## 
+## Number of Fisher Scoring iterations: 12
+```
 ---
 
 class: middle, center
@@ -74,19 +131,54 @@ class: middle, center
 ---
 # Creating the model
 
-- eliminated predictor variables with a high p-value, including gender and bmi
+- eliminated predictor variables with a high p-value, including gender
 - trained updated model on training data
-
-TODO: INSERT CODE CHUNK TRAINING UPDATED MODEL
-TODO: plot model data from testing data against true testing data values
 
 ---
 
 # Evaluating the model
 
-- performed 5-fold cross-validation to determine accuracy of the model
+Training data:
 
-TODO: INSERT CODE CHUNK WITH ACCURACY NUMBERS
+
+```
+## # A tibble: 2 x 6
+##   .metric  .estimator  mean     n std_err .config             
+##   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+## 1 accuracy binary     0.954     5 0.00397 Preprocessor1_Model1
+## 2 roc_auc  binary     0.853     5 0.0117  Preprocessor1_Model1
+```
+
+---
+
+# Evaluating the model
+
+```
+## Setting levels: control = 0, case = 1
+```
+
+```
+## Setting direction: controls &lt; cases
+```
+
+&lt;img src="presentation_files/figure-html/fit1-1.png" width="80%" /&gt;
+
+---
+
+# Evaluating the model
+
+Testing data:
+
+
+```
+## Setting levels: control = 0, case = 1
+```
+
+```
+## Setting direction: controls &lt; cases
+```
+
+&lt;img src="presentation_files/figure-html/fit2-1.png" width="80%" /&gt;
 
 ---
 
@@ -97,7 +189,16 @@ class: middle, center
 
 # Sample prediction
 
-- use predict() on one sample individual
+
+```r
+predict(stroke_model_updated, newdata=data.frame(age=30, avg_glucose_level=130, hypertension=0, heart_disease=1), type="response")
+```
+
+```
+##          1 
+## 0.01216023
+```
+
 ---
 
 class: inverse, middle, center
@@ -203,7 +304,7 @@ glance(model)
 - goes here
 ]
 .pull-right[
-&lt;img src="presentation_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
 ]
 
 ---
