@@ -159,9 +159,7 @@ class: middle, center
 
 ---
 
-# Evaluating the model
-
-Training data:
+# Evaluating the model: training data
 
 ```{r crossval1, echo=FALSE}
 set.seed(3456)
@@ -175,7 +173,7 @@ collect_metrics(stroke_fit_rs_1, summarize=TRUE)
 
 ---
 
-# Evaluating the model
+# Evaluating the model: training data
 ```{r fit1, echo=FALSE}
 train_prob = predict(stroke_model_updated, newdata = train_data, type = "response")
 test_roc1 = roc(train_data$stroke ~ train_prob, plot = TRUE, print.auc = TRUE)
@@ -183,9 +181,7 @@ test_roc1 = roc(train_data$stroke ~ train_prob, plot = TRUE, print.auc = TRUE)
 
 ---
 
-# Evaluating the model
-
-Testing data:
+# Evaluating the model: testing data
 
 ```{r fit2, echo=FALSE}
 test_prob = predict(stroke_model_updated, newdata = test_data, type = "response")

@@ -1,6 +1,6 @@
 ---
-title: "Project proposal"
-author: "Team name"
+title: "Proposal"
+author: "Group Green"
 output: github_document
 ---
 
@@ -8,18 +8,34 @@ output: github_document
 library(tidyverse)
 library(broom)
 library(skimr)
+library(codebook)
 ```
+
 ```{r load-data, eval=TRUE}
 stroke <- read_csv("healthcare_dataset_stroke_data.csv")
 ```
-### Section 1: Introduction  
-Our group chose to use the "Stroke prediction" dataset (https://www.kaggle.com/fedesoriano/stroke-prediction-dataset) by Fedesoriano, to answer our research question, which is "Between certain factors such as gender, age, heart disease, bmi, hypertension which has the greatest impact on the likelihood of stroke?"
 
-Fedesoriano observed 5110 patients and tried to determine their potential vulnerability to strokes based on 11 different factors. The eleven factors were;gender, age, hypertension, heart disease, ever married , work type, residence type, average glucose level, bmi, smoking status, and stroke. 
+### Section 1: Introduction  
+Our group chose to use the "Stroke Prediction" dataset (https://www.kaggle.com/fedesoriano/stroke-prediction-dataset) from user fedsoriano on Kaggle, to answer our research questions, which are "Which variables are most useful for determining whether an individual is likely to have a stroke?"
+
+The set observes 12 stroke-related factors for 5110 individuals, including id, gender, age, hypertension, heart disease, marriage status, work type, residence type, average glucose level, bmi, smoking status, and whether or not the individual had a stroke. 
 
 ### Section 2: Data  
-See READMEdata file in /data folder. Preliminary exploratory data analysis is included in the codebook.
-```{r}
+```{r load-data, eval=TRUE}
+stroke <- read_csv("healthcare_dataset_stroke_data.csv")
+```
+
+```{r, eval=TRUE}
+save(stroke,file="./stroke.RData")
+```
+
+## Stroke Dataset Codebook
+```{r, eval=TRUE}
+codebook(stroke)
+```
+
+## Skim Stroke Dataset Summary
+```{r, eval=TRUE}
 skim(stroke)
 ```
 

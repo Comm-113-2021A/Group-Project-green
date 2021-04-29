@@ -5,10 +5,14 @@ output: github_document
 ---
 
 ## Dataset
-TODO: INSERT INTRODUCTION FROM PROPOSAL
+Our goal for this project was to answer two research questions:
+
+Which variables are most useful for determining whether an individual is likely to have a stroke?
+
+How can we train a model on these variables to predict stroke likelihood?
 
 ## Predictor variables
-The dataset we chose had 9 categorical variables, including:
+Our group chose to use the "Stroke Prediction" dataset, which observes 12 stroke-related factors for 5110 individuals. The categorical variables include: 
 
 - id
 
@@ -28,8 +32,7 @@ The dataset we chose had 9 categorical variables, including:
 
 - stroke
 
-
-and 3 quantitative variables, including:
+The quantitative variables include:
 
 - age
 
