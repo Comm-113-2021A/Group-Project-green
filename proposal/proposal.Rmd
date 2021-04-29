@@ -7,17 +7,48 @@ output: github_document
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
+library(skimr)
+```
+```{r load-data, eval=TRUE}
+stroke <- read_csv("healthcare_dataset_stroke_data.csv")
+```
+### Section 1: Introduction  
+Our group chose to use the "Stroke prediction" dataset (https://www.kaggle.com/fedesoriano/stroke-prediction-dataset) by Fedesoriano, to answer our research question, which is "Between certain factors such as gender, age, heart disease, bmi, hypertension which has the greatest impact on the likelihood of stroke?"
+
+Fedesoriano observed 5110 patients and tried to determine their potential vulnerability to strokes based on 11 different factors. The eleven factors were;gender, age, hypertension, heart disease, ever married , work type, residence type, average glucose level, bmi, smoking status, and stroke. 
+
+### Section 2: Data  
+See READMEdata file in /data folder. Preliminary exploratory data analysis is included in the codebook.
+```{r}
+skim(stroke)
 ```
 
-## 1. Introduction
+### Section 3: Data Analysis Plan  
+*Explanatory variables:*  gender, age, heart disease, bmi, hypertension
+*Response variable:* stroke
 
+```{r}
+summary(stroke)
+```
+```{r}
+stroke %>%
+  ggplot(aes(x=age, y= stroke)) +
+  geom_point()+
+  geom_smooth()
+```
 
+As individuals grow older the predicted model shows that they are more likely to be subject to strokes.
 
-## 2. Data
+```{r}
+stroke %>%
+  ggplot(aes(x= avg_glucose_level, y= stroke)) +
+  geom_point()+
+  geom_smooth()
+```
+As the average glucose level of an individual increases, the model predicts a higher vulnerability to strokes.
 
+We hope to create some visual representation of the correlation between stroke and each one of the explanatory variables in order to determine which one has the greatest effect on death outcome. Specifically, we plan to create a dot plot or line graph and calculate the correlation coefficient between each of the variables and stroke outcome. However, we are currently searching for a better way to represent the data visually given that the stroke outcome is a boolean value and a dot plot/line graph may not be the best way to illustrate this.
 
-
-## 3. Data analysis plan
 
 
 
