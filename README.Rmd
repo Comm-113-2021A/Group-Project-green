@@ -1,5 +1,5 @@
 ---
-title: Heart Failure Predictions
+title: Stroke Predictions
 author: Group Green
 output: github_document
 ---
