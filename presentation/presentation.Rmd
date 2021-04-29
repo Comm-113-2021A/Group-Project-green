@@ -22,6 +22,7 @@ library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
 library(showtext)
+library(pROC)
 ```
 
 ```{r setup, include=FALSE}
@@ -44,10 +45,67 @@ style_mono_accent(
 stroke <- read_csv("../data/healthcare_dataset_stroke_data.csv")
 ```
 
+```{r factor, include=FALSE}
+stroke <- na.omit(stroke)
+stroke$gender <- factor(stroke$gender)
+stroke$stroke <- factor(stroke$stroke)
+```
+
+```{r splitdata, include=FALSE}
+set.seed(1234)
+stroke_split <- initial_split(stroke, prop = 0.75)
+train_data <- training(stroke_split) 
+test_data <- testing(stroke_split)
+```
+
+```{r modelprelim, include=FALSE}
+stroke_model_prelim <- glm(stroke ~ gender + age + avg_glucose_level + hypertension + heart_disease, data = train_data, family = binomial)
+summary(stroke_model_prelim)
+```
+
+```{r modelupdated, include=FALSE}
+stroke_model_updated <- glm(stroke ~ age + avg_glucose_level + hypertension + heart_disease, data = train_data, family = binomial)
+summary(stroke_model_updated)
+```
+
+```{r include=FALSE}
+stroke_model_updated2 <- logistic_reg() %>%
+  set_engine("glm")
+```
+
+```{r samplepred, include=FALSE}
+predict(stroke_model_updated, newdata=data.frame(age=30, avg_glucose_level=130, hypertension=0, heart_disease=1), type="response")
+```
+
+```{r recipe, include=FALSE}
+stroke_rec <- recipe(stroke ~ age + avg_glucose_level + hypertension + heart_disease, data = train_data)
+```
+
+```{r workflow, include=FALSE}
+stroke_flow <- workflow() %>%
+  add_model(stroke_model_updated2) %>%
+  add_recipe(stroke_rec)
+```
+
+```{r crossval, include=FALSE}
+set.seed(3456)
+stroke_folds <- vfold_cv(train_data, v = 5)
+
+stroke_fit_rs_1 <- stroke_flow %>%
+  fit_resamples(stroke_folds)
+
+collect_metrics(stroke_fit_rs_1, summarize=TRUE)
+```
+
+```{r fit, include=FALSE}
+test_prob = predict(stroke_model_updated, newdata = test_data, type = "response")
+test_roc = roc(test_data$stroke ~ test_prob, plot = TRUE, print.auc = TRUE)
+```
+
 
 class: center, middle
 
-## Which variables are most useful for determining whether an individual is likely to have a stroke? <br> <br> How can we train a model on these variables to predict stroke likelihood given these variables?
+## Which variables are most useful for determining whether an individual is likely to have a stroke? <br> <br> How can we train a model on these variables to predict stroke likelihood?
 
 ---
 # The dataset
@@ -80,8 +138,13 @@ We used a logistical regression model to narrow down predictor variables by thei
 - heart disease
 - age
 - average glucose level
+---
+# Choosing potential predictor variables
 
-TODO: INSERT GLM AND SUMMARY CODE CHUNK
+```{r modelprelim1}
+stroke_model_prelim <- glm(stroke ~ gender + age + avg_glucose_level + hypertension + heart_disease, data = train_data, family = binomial)
+summary(stroke_model_prelim)
+```
 ---
 
 class: middle, center
@@ -91,19 +154,43 @@ class: middle, center
 ---
 # Creating the model
 
-- eliminated predictor variables with a high p-value, including gender and bmi
+- eliminated predictor variables with a high p-value, including gender
 - trained updated model on training data
-
-TODO: INSERT CODE CHUNK TRAINING UPDATED MODEL
-TODO: plot model data from testing data against true testing data values
 
 ---
 
 # Evaluating the model
 
-- performed 5-fold cross-validation to determine accuracy of the model
+Training data:
 
-TODO: INSERT CODE CHUNK WITH ACCURACY NUMBERS
+```{r crossval1, echo=FALSE}
+set.seed(3456)
+stroke_folds <- vfold_cv(train_data, v = 5)
+
+stroke_fit_rs_1 <- stroke_flow %>%
+  fit_resamples(stroke_folds)
+
+collect_metrics(stroke_fit_rs_1, summarize=TRUE)
+```
+
+---
+
+# Evaluating the model
+```{r fit1, echo=FALSE}
+train_prob = predict(stroke_model_updated, newdata = train_data, type = "response")
+test_roc1 = roc(train_data$stroke ~ train_prob, plot = TRUE, print.auc = TRUE)
+```
+
+---
+
+# Evaluating the model
+
+Testing data:
+
+```{r fit2, echo=FALSE}
+test_prob = predict(stroke_model_updated, newdata = test_data, type = "response")
+test_roc = roc(test_data$stroke ~ test_prob, plot = TRUE, print.auc = TRUE)
+```
 
 ---
 
@@ -114,8 +201,10 @@ class: middle, center
 
 # Sample prediction
 
-- use predict() on one sample individual
-TODO: INSERT CODE CHUNK WITH SAMPLE PREDICTION
+```{r samplepred1}
+predict(stroke_model_updated, newdata=data.frame(age=30, avg_glucose_level=130, hypertension=0, heart_disease=1), type="response")
+```
+
 ---
 
 class: inverse, middle, center

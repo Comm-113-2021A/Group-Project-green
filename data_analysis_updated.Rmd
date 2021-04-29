@@ -7,6 +7,7 @@ output: html_document
 library(tidyverse)
 library(tidymodels)
 library(knitr)
+library(pROC)
 ```
 
 ```{r setup, include=FALSE}
@@ -18,7 +19,7 @@ stroke <- read_csv("data/healthcare_dataset_stroke_data.csv")
 ```
 
 
-```{r varstoints}
+```{r factor}
 stroke <- na.omit(stroke)
 stroke$gender <- factor(stroke$gender)
 stroke$stroke <- factor(stroke$stroke)
@@ -68,4 +69,13 @@ stroke_fit_rs_1 <- stroke_flow %>%
   fit_resamples(stroke_folds)
 
 collect_metrics(stroke_fit_rs_1, summarize=TRUE)
+```
+```{r fit1, echo=FALSE}
+train_prob = predict(stroke_model_updated, newdata = train_data, type = "response")
+test_roc1 = roc(train_data$stroke ~ train_prob, plot = TRUE, print.auc = TRUE)
+```
+
+```{r fit}
+test_prob = predict(stroke_model_updated, newdata = test_data, type = "response")
+test_roc = roc(test_data$stroke ~ test_prob, plot = TRUE, print.auc = TRUE)
 ```
