@@ -1,5 +1,5 @@
 ---
-title: "Heart Failure Predictions"
+title: "Predicting stroke probability"
 subtitle: 
 author: "Team Green <br> Matthew Leblanc, Sarika Rau, Martin Zakoian, Josias Zongo"
 date: "`r Sys.Date()`"
@@ -29,22 +29,98 @@ library(showtext)
 knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "80%")
 ```
 
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(
+  base_color = "#1c5253",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+```
+
 ```{r load-data, include=FALSE}
 # Load your data here
 stroke <- read_csv("../data/healthcare_dataset_stroke_data.csv")
 ```
 
-```{r}
-style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
-)
-```
-
 
 class: center, middle
 
-## A statement of the overall goal / research question
+## Which variables are most useful for determining whether an individual is likely to have a stroke? <br> <br> How can we train a model on these variables to predict stroke likelihood given these variables?
 
+---
+# The dataset
+
+.pull-left[
+9 categorical variables:
+- id
+- gender
+- hypertension
+- heart disease
+- ever married
+- work type
+- residence type
+- smoking status
+- stroke
+]
+.pull-right[
+3 quantitative variables:
+- age
+- average glucose level
+- bmi
+]
+
+---
+# Choosing potential predictor variables
+
+We used a logistical regression model to narrow down predictor variables by their p-values from the following:
+- gender
+- hypertension
+- heart disease
+- age
+- average glucose level
+
+TODO: INSERT GLM AND SUMMARY CODE CHUNK
+---
+
+class: middle, center
+
+# Why a logistical model?
+
+---
+# Creating the model
+
+- eliminated predictor variables with a high p-value, including gender and bmi
+- trained updated model on training data
+
+TODO: INSERT CODE CHUNK TRAINING UPDATED MODEL
+TODO: plot model data from testing data against true testing data values
+
+---
+
+# Evaluating the model
+
+- performed 5-fold cross-validation to determine accuracy of the model
+
+TODO: INSERT CODE CHUNK WITH ACCURACY NUMBERS
+
+---
+
+class: middle, center
+
+# How can we use this in the real world?
+---
+
+# Sample prediction
+
+- use predict() on one sample individual
+TODO: INSERT CODE CHUNK WITH SAMPLE PREDICTION
+---
+
+class: inverse, middle, center
+
+# Thank you
 ---
 
 class: inverse, center, middle

@@ -1,0 +1,71 @@
+---
+title: "Data Analysis"
+output: html_document
+---
+```{r load-packages, include = FALSE}
+# Add any additional packages you need to this chunk
+library(tidyverse)
+library(tidymodels)
+library(knitr)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r readdata}
+stroke <- read_csv("data/healthcare_dataset_stroke_data.csv")
+```
+
+
+```{r varstoints}
+stroke <- na.omit(stroke)
+stroke$gender <- factor(stroke$gender)
+stroke$stroke <- factor(stroke$stroke)
+```
+
+```{r splitdata}
+set.seed(1234)
+stroke_split <- initial_split(stroke, prop = 0.75)
+train_data <- training(stroke_split) 
+test_data <- testing(stroke_split)
+```
+
+```{r modelprelim}
+stroke_model_prelim <- glm(stroke ~ gender + age + avg_glucose_level + hypertension + heart_disease, data = train_data, family = binomial)
+summary(stroke_model_prelim)
+```
+
+```{r modelupdated}
+stroke_model_updated <- glm(stroke ~ age + avg_glucose_level + hypertension + heart_disease, data = train_data, family = binomial)
+summary(stroke_model_updated)
+```
+```{r}
+stroke_model_updated2 <- logistic_reg() %>%
+  set_engine("glm")
+```
+
+
+```{r samplepred}
+predict(stroke_model_updated, newdata=data.frame(age=30, avg_glucose_level=130, hypertension=0, heart_disease=1), type="response")
+```
+
+```{r recipe}
+stroke_rec <- recipe(stroke ~ age + avg_glucose_level + hypertension + heart_disease, data = train_data)
+```
+
+```{r workflow}
+stroke_flow <- workflow() %>%
+  add_model(stroke_model_updated2) %>%
+  add_recipe(stroke_rec)
+```
+
+```{r crossval}
+set.seed(3456)
+stroke_folds <- vfold_cv(train_data, v = 5)
+
+stroke_fit_rs_1 <- stroke_flow %>%
+  fit_resamples(stroke_folds)
+
+collect_metrics(stroke_fit_rs_1, summarize=TRUE)
+```

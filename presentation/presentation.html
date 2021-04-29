@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Heart Failure Predictions</title>
+    <title>Predicting stroke probability</title>
     <meta charset="utf-8" />
     <meta name="author" content="Team Green   Matthew Leblanc, Sarika Rau, Martin Zakoian, Josias Zongo" />
-    <meta name="date" content="2021-04-01" />
+    <meta name="date" content="2021-04-29" />
     <script src="libs/header-attrs-2.7/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -12,9 +12,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Heart Failure Predictions
+# Predicting stroke probability
 ### Team Green <br> Matthew Leblanc, Sarika Rau, Martin Zakoian, Josias Zongo
-### 2021-04-01
+### 2021-04-29
 
 ---
 
@@ -26,17 +26,83 @@ class: center, middle, inverse, title-slide
 
 
 
-```r
-style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
-)
-```
 
 
 class: center, middle
 
-## A statement of the overall goal / research question
+## Which variables are most useful for determining whether an individual is likely to have a stroke? &lt;br&gt; &lt;br&gt; How can we train a model on these variables to predict stroke likelihood given these variables?
 
+---
+# The dataset
+
+.pull-left[
+9 categorical variables:
+- id
+- gender
+- hypertension
+- heart disease
+- ever married
+- work type
+- residence type
+- smoking status
+- stroke
+]
+.pull-right[
+3 quantitative variables:
+- age
+- average glucose level
+- bmi
+]
+
+---
+# Choosing potential predictor variables
+
+We used a logistical regression model to narrow down predictor variables by their p-values from the following:
+- gender
+- hypertension
+- heart disease
+- age
+- average glucose level
+
+TODO: INSERT GLM AND SUMMARY CODE CHUNK
+---
+
+class: middle, center
+
+# Why a logistical model?
+
+---
+# Creating the model
+
+- eliminated predictor variables with a high p-value, including gender and bmi
+- trained updated model on training data
+
+TODO: INSERT CODE CHUNK TRAINING UPDATED MODEL
+TODO: plot model data from testing data against true testing data values
+
+---
+
+# Evaluating the model
+
+- performed 5-fold cross-validation to determine accuracy of the model
+
+TODO: INSERT CODE CHUNK WITH ACCURACY NUMBERS
+
+---
+
+class: middle, center
+
+# How can we use this in the real world?
+---
+
+# Sample prediction
+
+- use predict() on one sample individual
+---
+
+class: inverse, middle, center
+
+# Thank you
 ---
 
 class: inverse, center, middle
@@ -137,7 +203,7 @@ glance(model)
 - goes here
 ]
 .pull-right[
-&lt;img src="presentation_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
 ]
 
 ---

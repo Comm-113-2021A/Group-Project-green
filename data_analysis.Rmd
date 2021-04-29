@@ -45,6 +45,7 @@ TODO: predict(stroke_model1, ..) <- use to determine how much stroke probability
 
 TODO: 5-fold cross-validation to determine accuracy of model
 
+
 ```{r model 2}
 stroke_model2 <- glm(stroke ~ avg_glucose_level, family = "binomial", data = train_data)
 ```
@@ -58,10 +59,12 @@ stroke %>%
   ggplot(aes(x=avg_glucose_level, y=stroke)) + geom_point() + 
   geom_smooth(method = "glm", method.args = list(family = "binomial"))
 ```
+
 ```{r model3}
 
 stroke_model3 <- glm(stroke ~ smoking_status, family = "binomial", data = train_data)
 ```
+
 ```{r}
 tidy(stroke_model3) 
 
