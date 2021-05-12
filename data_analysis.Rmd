@@ -1,0 +1,93 @@
+---
+title: "Data Analysis"
+output: html_document
+---
+```{r load-packages, include = FALSE}
+# Add any additional packages you need to this chunk
+library(tidyverse)
+library(tidymodels)
+library(knitr)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+stroke <- read_csv("data/healthcare_dataset_stroke_data.csv")
+```
+
+
+
+```{r splitdata}
+set.seed(1234)
+stroke_split <- initial_split(stroke, prop = 0.75)
+train_data <- training(stroke_split) 
+test_data <- testing(stroke_split)
+```
+
+#```{r model1}
+stroke_model1 <- glm(stroke ~ age, family = "binomial", data = train_data)
+```
+
+
+```{r recipe model1}
+stroke1_rec <- 
+  recipe(stroke ~ age, data = train_data)
+```
+
+```{r workflow model1}
+stroke1_flow <- 
+  workflow() %>% 
+  add_model(stroke_model1) %>% 
+  add_recipe(stroke1_rec) 
+```
+
+
+```{r}
+tidy(stroke_model1)
+```
+Interpretation: for every one year increase in age, the probability of stroke increases by a factor of 1.0769.
+
+```{r}
+stroke %>%
+  ggplot(aes(x=age, y=stroke)) + geom_point() + 
+  geom_smooth(method = "glm", method.args = list(family = "binomial"))
+```
+
+TODO: predict(stroke_model1, ..) <- use to determine how much stroke probability increases as age increases from x to y
+
+```{r predictions model1}
+prediction <- 
+  predict(stroke1_flow, train_data)
+```
+
+TODO: 5-fold cross-validation to determine accuracy of model
+
+```{r model 2}
+stroke_model2 <- glm(stroke ~ avg_glucose_level, family = "binomial", data = train_data)
+```
+```{r}
+tidy(stroke_model2) 
+
+```
+
+```{r}
+stroke %>%
+  ggplot(aes(x=avg_glucose_level, y=stroke)) + geom_point() + 
+  geom_smooth(method = "glm", method.args = list(family = "binomial"))
+```
+```{r model3}
+
+stroke_model3 <- glm(stroke ~ smoking_status, family = "binomial", data = train_data)
+```
+```{r}
+tidy(stroke_model3) 
+
+```
+
+```{r}
+stroke %>%
+  ggplot(aes(x=smoking_status, y=stroke)) + 
+  geom_violin()
+```
